@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Course - ELMS</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .form-card {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 25px;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    .form-header {
+      background: #0d6efd;
+      color: white;
+      padding: 15px;
+      border-radius: 10px 10px 0 0;
+      margin: -25px -25px 25px -25px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="form-card">
+    <div class="form-header">
+      <h4><i class="fas fa-plus-circle"></i> Add New Course</h4>
+    </div>
+
+    <form>
+      <!-- Course Title -->
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-heading"></i> Course Title</label>
+        <input type="text" class="form-control" placeholder="Enter course title" required>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-align-left"></i> Description</label>
+        <textarea class="form-control" rows="4" placeholder="Enter course description" required></textarea>
+      </div>
+
+      <!-- Category & Level -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><i class="fas fa-list"></i> Category</label>
+          <select class="form-select" required>
+            <option selected disabled>Choose category</option>
+            <option>Programming</option>
+            <option>Web Development</option>
+            <option>Data Science</option>
+            <option>AI / Machine Learning</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><i class="fas fa-signal"></i> Level</label>
+          <select class="form-select" required>
+            <option selected disabled>Select level</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Language & Price -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><i class="fas fa-language"></i> Language</label>
+          <select class="form-select" required>
+            <option selected disabled>Select language</option>
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Gujarati</option>
+            <option>Spanish</option>
+          </select>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label"><i class="fas fa-dollar-sign"></i> Price</label>
+          <input type="number" class="form-control" placeholder="Enter course price" required>
+        </div>
+      </div>
+
+      <!-- Upload Material -->
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-file-upload"></i> Upload Course Material</label>
+        <input type="file" class="form-control">
+        <small class="text-muted">Upload PDF, Video, or Image</small>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Save Course</button>
+      <button type="reset" class="btn btn-secondary"><i class="fas fa-undo"></i> Reset</button>
+    </form>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

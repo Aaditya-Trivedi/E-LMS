@@ -1,0 +1,147 @@
+{% extends 'base3.html' %}
+{% block title %}Course Detail - {{ course.title }}{% endblock %}
+{% load static %}
+{% load course_tags %}
+{% block content %}
+
+<!-- NAVBAR ================================================== -->
+<nav class="bg-white border-bottom py-3 header-fixed">
+    <div class="px-5 px-lg-8 w-100">
+        <div class="d-md-flex align-items-center">
+            <!-- Brand -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'assets/img/E-LMS_Logo.svg' %}" class="navbar-brand-img" alt="E-LMS Logo">
+            </a>
+            <!-- Lesson Title -->
+            <div class="ms-md-6 ms-xl-10 me-auto mb-5 mb-md-0">
+                <h3 class="mb-0 line-clamp-2">
+                    {{ course.course_category.name }}: {{ course.title }}
+                </h3>
+            </div>
+            <!-- Back to Course -->
+            <a href="{{ course.get_absolute_url }}"
+               class="btn btn-sm btn-primary ms-md-6 px-6 mb-3 mb-md-0 flex-shrink-0">
+                Back to Course
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN LAYOUT -->
+<div class="container-fluid" style="padding-top: 90px;"> <!-- Increased top padding to match fixed navbar -->
+    <div class="row">
+
+        <!-- Sidebar container -->
+        <div class="col-md-4 col-lg-3 bg-white shadow-sm" style="height: calc(100vh - 90px); overflow-y: auto;">
+            <div class="p-4">
+                <!-- Curriculum Accordion -->
+                <div class="accordion mt-4" id="accordionCurriculum">
+                    {% for lesson in course.lesson_set.all %}
+                        <div class="overflow-hidden">
+                            <div class="d-flex align-items-center" id="curriculumheading{{ lesson.id }}">
+                                <h5 class="mb-0 w-100">
+                                    <button class="d-flex align-items-center p-5 min-height-80 text-dark fw-medium collapse-accordion-toggle line-height-one"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#Curriculumcollapse{{ lesson.id }}"
+                                            aria-expanded="false"
+                                            aria-controls="Curriculumcollapse{{ lesson.id }}">
+                                        <span class="me-4 text-dark d-flex">
+                                            <svg width="15" height="2" viewBox="0 0 15 2" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <rect width="15" height="2" fill="currentColor"/>
+                                            </svg>
+                                            <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 7H15V9H0V7Z" fill="currentColor"/>
+                                                <path d="M6 16L6 0L8 0L8 16H6Z" fill="currentColor"/>
+                                            </svg>
+                                        </span>
+                                        {{ lesson.name }}
+                                    </button>
+                                </h5>
+                            </div>
+
+                            <div id="Curriculumcollapse{{ lesson.id }}" class="collapse"
+                                 aria-labelledby="curriculumheading{{ lesson.id }}"
+                                 data-bs-parent="#accordionCurriculum">
+                                {% for video in lesson.video_set.all %}
+                                    <div class="border-top px-5 py-4 min-height-70 d-md-flex align-items-center">
+                                        <div class="d-flex align-items-center me-auto mb-4 mb-md-0">
+                                            <div class="ms-4">
+                                                {% if video.video_file %}
+                                                    <a href="#" class="text-secondary d-flex video-link" data-video-url="{{ video.video_file.url }}">
+    {{ video.title }}
+</a>
+                                                {% else %}
+                                                    <span class="text-muted">
+                                                        {{ video.title }} <br>(video will upload soon)
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center overflow-auto flex-shrink-all">
+                                            <div class="badge btn-blue-soft me-5 font-size-sm fw-normal py-2">
+                                                {{ video.time_duration|default:"--:--" }}
+                                            </div>
+                                            <i class="fa-solid fa-circle-play"></i>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="col-md-8 col-lg-9 pt-4" style="padding-left: 30px;">
+            <!-- Lesson Title -->
+            <h3 class="mb-4">{{ course.title }}</h3>
+
+            <!-- Video Player -->
+            <div class="ratio ratio-16x9 rounded shadow mb-4">
+                {% if video and video.video_file %}
+
+                    <video id="mainVideoPlayer" controls width="100%" height="500" class="rounded shadow mb-4">
+                        <source id="mainVideoSource" src="{{ video.video_file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                {% else %}
+                    <div class="alert alert-warning">
+                        No video file has been uploaded for this lecture.
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Description -->
+            <h3>Course Description</h3>
+            <div class="mb-6 line-height-md">
+                {{ course.descriptions|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const videoLinks = document.querySelectorAll('.video-link');
+        const videoPlayer = document.getElementById('mainVideoPlayer');
+        const videoSource = document.getElementById('mainVideoSource');
+
+        videoLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default anchor behavior
+                const videoUrl = this.getAttribute('data-video-url');
+                if (videoUrl && videoPlayer && videoSource) {
+                    videoSource.setAttribute('src', videoUrl);
+                    videoPlayer.load();
+                    videoPlayer.play();
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base2.html" %}
+{% load static %}
+
+{% block title %}Edit Course{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'teacher/teacher_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+
+    <h2>Edit Course: {{ course.title }}</h2>
+
+        <!-- Back Button -->
+    <a href="{% url 'my_coursess' %}" class="btn btn-secondary mb-3">
+        &larr; Back to My Courses
+    </a>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="title">Course Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ course.title }}" >
+        </div>
+
+        <div class="form-group">
+            <label for="descriptions">Description</label>
+            <textarea class="form-control" id="descriptions" name="descriptions" rows="4" >{{ course.descriptions }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="course_category">Category</label>
+            <select class="form-control" id="course_category" name="course_category" >
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if course.course_category.id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="level">Level</label>
+            <select class="form-control" id="level" name="level" >
+                {% for level in levels %}
+                    <option value="{{ level.id }}" {% if course.level.id == level.id %}selected{% endif %}>
+                        {{ level.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="language">Language</label>
+            <select class="form-control" id="language" name="language" >
+                {% for lang in languages %}
+                    <option value="{{ lang.id }}" {% if course.language.id == lang.id %}selected{% endif %}>
+                        {{ lang.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price ($)</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ course.price }}" >
+        </div>
+
+        <div class="form-group">
+            <label for="discount">Discount (%)</label>
+            <input type="number" step="0.01" class="form-control" id="discount" name="discount" value="{{ course.discount }}">
+        </div>
+
+        <div class="form-group">
+            <label for="course_image">Course Image</label><br>
+            {% if course.course_image %}
+                <img src="{{ course.course_image.url }}" alt="Current Image" width="150" class="mb-2"><br>
+            {% endif %}
+            <input type="file" class="form-control-file" id="course_image" name="course_image">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Course</button>
+        <a href="{% url 'my_coursess' %}" class="btn btn-secondary ml-2">Cancel</a>
+    </form>
+</div>
+  </div>
+</div>
+{% endblock %}

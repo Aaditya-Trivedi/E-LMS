@@ -1,0 +1,105 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - Teacher{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'teacher/teacher_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+
+  <div class="card shadow-lg border-0 rounded-3">
+    <!-- Card Header -->
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0 text-light"><i class="fas fa-user-edit"></i> Edit Profile</h4>
+    </div>
+
+    <!-- Card Body -->
+    <div class="card-body p-4">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- User Name -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-user"></i>Username</label>
+          <input type="text" class="form-control" name="username"
+                 value="{{ teacher.user }}" readonly>
+        </div>
+
+        <!-- First Name -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-user"></i>First Name</label>
+          <input type="text" class="form-control" name="first_name"
+                 value="{{ request.user.first_name }}" required>
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-user"></i>Last Name</label>
+          <input type="text" class="form-control" name="last_name"
+                 value="{{ request.user.last_name}}" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-envelope"></i> Email Address</label>
+          <input type="email" class="form-control" name="email"
+                 value="{{ teacher.email }}" readonly>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-phone"></i> Contact Number</label>
+          <input type="text" class="form-control" name="contact_no" maxlength="10"
+                 value="{{ teacher.contact_no }}">
+        </div>
+
+        <!-- Qualification -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-graduation-cap"></i> Qualification</label>
+          <input type="text" class="form-control" name="qualification"
+                 value="{{ teacher.qualification }}">
+        </div>
+
+        <!-- Experience -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-briefcase"></i> Experience (Years)</label>
+          <input type="number" class="form-control" name="experience"
+                 value="{{ teacher.experience }}">
+        </div>
+
+        <!-- Bio -->
+        <div class="mb-3">
+          <label class="form-label"><i class="fas fa-info-circle"></i> Bio</label>
+          <textarea class="form-control" name="bio" rows="4">{{ teacher.bio }}</textarea>
+        </div>
+
+        <!-- Profile Picture -->
+<!--        <div class="mb-3">-->
+<!--          <label class="form-label"><i class="fas fa-image"></i> Profile Picture</label>-->
+<!--          <input type="file" class="form-control" name="profile_pic">-->
+<!--          {% if teacher.profile_pic %}-->
+<!--            <div class="mt-2">-->
+<!--              <img src="{{ teacher.profile_pic.url }}" class="img-thumbnail rounded"-->
+<!--                   alt="Profile Picture" style="max-height: 120px;">-->
+<!--            </div>-->
+<!--          {% endif %}-->
+<!--        </div>-->
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-between">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+          <a href="{% url 'teacher_dashboard' %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}

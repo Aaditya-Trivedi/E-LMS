@@ -1,0 +1,21 @@
+    <!-- Sidebar -->
+    <div class="col-md-2 bg-dark text-white min-vh-100 p-3">
+      <h4 class="text-center mb-4">
+        <i class="fas fa-chalkboard-teacher"></i> Teacher
+      </h4>
+      <nav class="nav flex-column">
+        <a class="nav-link text-white-50" href="{% url 'edit_teacher_profile' %}"><i class="fas fa-user me-2"></i> Profile</a>
+        <a class="nav-link text-white-50" href="{% url 'teacher_dashboard' %}" selected><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+        <a class="nav-link text-white-50" href="{% url 'my_coursess' %}"><i class="fas fa-book-open me-2"></i> My Courses</a>
+        <a href="{% url 'add_lesson'%}" class="nav-link text-white-50" title="Add Lesson">
+          <i class="fas fa-plus"></i> Add Lessons
+        </a>
+        <a href="{% url 'add_video'%}" class="nav-link text-white-50 title="Add Video">
+          <i class="fas fa-video"></i> Add Videos
+        </a>
+
+        <a class="nav-link text-white-50" href="{% url 'enrolled_students' %}"><i class="fas fa-users me-2"></i> Enrollments </a>
+        <a class="nav-link text-white-50" href="{% url 'teacher_earnings' %}"><i class="fas fa-wallet me-2"></i> Earnings</a>
+        <a class=" nav-link" href="{% url 'logout' %}"><button class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt me-2"></i> Logout</button></a>
+      </nav>
+    </div>

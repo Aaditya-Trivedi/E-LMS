@@ -1,0 +1,102 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}Joining Applications{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'admin/admin_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+  <h3><i class="fa-regular fa-note-sticky me-2"></i>Joining Applications</h3>
+
+  <!-- Pending Applications -->
+  <div class="card mt-4">
+    <div class="card-header bg-warning text-dark">
+      <strong>Pending Applications</strong>
+    </div>
+    <div class="card-body">
+      {% if pending_apps %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Qualification</th>
+              <th>Experience</th>
+              <th>Resume</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for app in pending_apps %}
+            <tr>
+              <td>{{ app.first_name }} {{ app.last_name }}</td>
+              <td>{{ app.email }}</td>
+              <td>{{ app.qualification }}</td>
+              <td>{{ app.experience }} yrs</td>
+              <td>
+                <a href="{{ app.resume.url }}" target="_blank" class="btn btn-sm btn-info">View Resume</a>
+              </td>
+              <td>
+                <a href="{% url 'update_application_status' app.id 'accept' %}" class="btn btn-success btn-sm">Accept</a>
+                <a href="{% url 'update_application_status' app.id 'reject' %}" class="btn btn-danger btn-sm">Reject</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted">No pending applications.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Accepted Applications -->
+  <div class="card mt-4">
+    <div class="card-header bg-success text-dark">
+      <strong>Accepted Applications</strong>
+    </div>
+    <div class="card-body">
+      {% if accepted_apps %}
+      <ul class="list-group">
+        {% for app in accepted_apps %}
+        <li class="list-group-item">
+          {{ app.first_name }} {{ app.last_name }} - {{ app.email }} ({{ app.experience }} yrs)
+          <a href="{{ app.resume.url }}" target="_blank" class="btn btn-sm btn-info float-end">View Resume</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted">No accepted applications.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Rejected Applications -->
+  <div class="card mt-4">
+    <div class="card-header bg-danger text-dark">
+      <strong>Rejected Applications</strong>
+    </div>
+    <div class="card-body">
+      {% if rejected_apps %}
+      <ul class="list-group">
+        {% for app in rejected_apps %}
+        <li class="list-group-item">
+          {{ app.first_name }} {{ app.last_name }} - {{ app.email }} ({{ app.experience }} yrs)
+          <a href="{{ app.resume.url }}" target="_blank" class="btn btn-sm btn-info float-end ">View Resume</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-muted">No rejected applications.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}

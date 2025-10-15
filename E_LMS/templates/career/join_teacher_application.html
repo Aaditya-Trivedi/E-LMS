@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Apply as Teacher{% endblock %}
+
+{% block content %}
+
+<div class="container my-5">
+  <div class="card shadow-sm">
+
+
+    <div class="card-header bg-success text-white">
+      <h4><i class="fas fa-chalkboard-teacher"></i> Apply to Become a Teacher</h4>
+    </div>
+                      {% include 'components/msg.html' %}
+
+    <div class="card-body">
+      <form method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label for="id_username" class="form-label"><i class="fas fa-user-circle"></i> Username</label>
+          <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter Username" required>
+        </div>
+
+        <!-- First Name -->
+        <div class="mb-3">
+          <label for="id_first_name" class="form-label"><i class="fas fa-user"></i> First Name</label>
+          <input type="text" name="first_name" id="id_first_name" class="form-control" placeholder="Enter First Name" required>
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+          <label for="id_last_name" class="form-label"><i class="fas fa-user"></i> Last Name</label>
+          <input type="text" name="last_name" id="id_last_name" class="form-control" placeholder="Enter Last Name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="id_email" class="form-label"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter Email" required>
+        </div>
+
+        <!-- Contact Number -->
+        <div class="mb-3">
+          <label for="id_contact_no" class="form-label"><i class="fas fa-phone"></i> Contact Number</label>
+          <input type="text" name="contact_no" id="id_contact_no" class="form-control" placeholder="Enter Contact Number" maxlength="10">
+        </div>
+
+        <!-- Qualification -->
+        <div class="mb-3">
+          <label for="id_qualification" class="form-label"><i class="fas fa-graduation-cap"></i> Qualification</label>
+          <textarea name="qualification" id="id_qualification" class="form-control" rows="3" placeholder="Write your qualifications here" required></textarea>
+        </div>
+
+        <!-- Experience -->
+        <div class="mb-3">
+          <label for="id_experience" class="form-label"><i class="fas fa-briefcase"></i> Experience (in years)</label>
+          <input type="number" name="experience" id="id_experience" class="form-control" min="0" placeholder="Years of Experience" required>
+        </div>
+
+        <!-- Resume Upload -->
+        <div class="mb-3">
+          <label for="id_resume" class="form-label"><i class="fas fa-file-upload"></i> Upload Resume (PDF)</label>
+          <input type="file" name="resume" id="id_resume" class="form-control" accept=".pdf" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+
+            <!-- Back Button -->
+            <a href="{% url 'home' %}" class="btn btn-secondary md-3 btn-sm me-5">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+
+              <button type="submit" class="btn btn-success">
+                <i class="fas fa-paper-plane"></i> Submit Application
+              </button>
+
+        </div>
+
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

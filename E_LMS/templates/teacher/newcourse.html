@@ -1,0 +1,100 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}Add New Course{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'teacher/teacher_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+          <!-- Back Button -->
+  <a href="{% url 'my_coursess' %}" class="btn btn-secondary mb-3">
+    <i class="fas fa-arrow-left me-1"></i> Back
+  </a>
+  <div class="card shadow-sm mx-auto" style="max-width: 800px;">
+    <div class="card-header bg-primary text-light">
+      <h4 class="mb-0 text-light">Add New Course</h4>
+    </div>
+
+    <div class="card-body">
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">Course Image</label>
+          <input type="file" name="course_image" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Teacher</label>
+          <input type="text" class="form-control" value="{{ teacher.user.first_name }} {{ teacher.user.last_name }}" readonly>
+          <!-- Hidden field to preserve teacher.id if you want -->
+          <input type="hidden" name="teacher" value="{{ teacher.id }}">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Course Title</label>
+          <input type="text" name="title" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea name="descriptions" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Category</label>
+            <select name="course_category" class="form-select">
+              <option disabled selected>Choose category</option>
+              {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Level</label>
+            <select name="level" class="form-select"d>
+              <option disabled selected>Select level</option>
+              {% for level in levels %}
+                <option value="{{ level.id }}">{{ level.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Language</label>
+            <select name="language" class="form-select">
+              <option disabled selected>Select language</option>
+              {% for lang in languages %}
+                <option value="{{ lang.id }}">{{ lang.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Price</label>
+            <input type="number" name="price" class="form-control" value="0">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Discount</label>
+          <input type="number" name="discount" class="form-control" value="0">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Course</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </form>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}

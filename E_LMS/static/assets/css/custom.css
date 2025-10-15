@@ -1,0 +1,18 @@
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+header .container{
+    padding-left: 0 !important;
+}
+footer .container {
+    padding-left: 0 !important;
+}
+
+/* This targets the entire page wrapper. You may need to change the class name. */
+.page-wrapper, .main-content, main {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}

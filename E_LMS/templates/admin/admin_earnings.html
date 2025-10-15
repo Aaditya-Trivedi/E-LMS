@@ -1,0 +1,79 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}Admin Commission Earnings{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'admin/admin_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+  <!-- Header & Back Button -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="text-primary"><i class="fas fa-percent"></i> Commission Earnings (Admin)</h4>
+
+  </div>
+
+  <!-- Date Filter Form -->
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label for="id_start_date" class="form-label">Start Date</label>
+      <input type="date" name="start_date" id="id_start_date" class="form-control"
+             value="{{ start_date }}">
+    </div>
+    <div class="col-md-3">
+      <label for="id_end_date" class="form-label">End Date</label>
+      <input type="date" name="end_date" id="id_end_date" class="form-control"
+             value="{{ end_date }}">
+    </div>
+    <div class="col-md-3 align-self-end">
+      <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
+      <a href="{% url 'admin_earnings' %}" class="btn btn-secondary">Clear</a>
+    </div>
+  </form>
+
+  <!-- Total Admin Earnings -->
+  <div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+      <h5>Total Admin Earnings{% if start_date or end_date %} {% if start_date %}from {{ start_date }}{% endif %}{% if end_date %} to {{ end_date }}{% endif %}{% endif %}:
+        <strong>₹{{ total_admin_earnings|floatformat:2 }}</strong>
+      </h5>
+    </div>
+  </div>
+
+  <!-- Earnings by Date -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <i class="fas fa-calendar-day me-2"></i> Earnings by Date
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Date</th>
+              <th>Commission Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ed in earnings_by_date %}
+            <tr>
+              <td>{{ ed.date|date:"d M, Y" }}</td>
+              <td>₹{{ ed.day_total|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="2" class="text-center text-muted">No earnings data for this period.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+</div>
+
+{% endblock %}

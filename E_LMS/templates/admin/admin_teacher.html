@@ -1,0 +1,82 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}All Teachers - Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'admin/admin_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="text-primary"><i class="fas fa-chalkboard-teacher"></i> All Teachers</h4>
+
+    <!-- Search Input -->
+    <input type="text" id="searchInput" class="form-control w-50" placeholder="Search teachers...">
+  </div>
+
+  <!-- Teachers Table -->
+  <div class="card mt-3 shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <i class="fas fa-users me-2"></i> Registered Teachers
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle" id="teacherTable">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Qualification</th>
+              <th>Experience</th>
+              <th>Rating</th>
+<!--              <th>Bio</th>-->
+            </tr>
+          </thead>
+          <tbody>
+            {% for teacher in teachers %}
+              <tr>
+                <td>{{ teacher.user.get_full_name }}</td>
+                <td>{{ teacher.email }}</td>
+                <td>{{ teacher.qualification|default:"-" }}</td>
+                <td>{{ teacher.experience }} yrs</td>
+                <td>
+                  {% if teacher.rating %}
+                    ⭐ {{ teacher.rating }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+<!--                <td>{{ teacher.bio|truncatechars:50 }}</td>-->
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="6" class="text-center text-muted">No teachers found.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<!-- JavaScript for search -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const rows = document.querySelectorAll("#teacherTable tbody tr");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      rows.forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(query) ? "" : "none";
+      });
+    });
+  });
+</script>
+{% endblock %}

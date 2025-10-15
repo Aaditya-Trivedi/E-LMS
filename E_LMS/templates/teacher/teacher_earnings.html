@@ -1,0 +1,80 @@
+{% extends "base2.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'teacher/teacher_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+
+    <h2>Earnings</h2>
+
+    <div class="mb-3">
+        <a href="?filter=all" class="btn {% if filter_type == 'all' %}btn-primary{% else %}btn-outline-primary{% endif %}">All</a>
+        <a href="?filter=received" class="btn {% if filter_type == 'received' %}btn-success{% else %}btn-outline-success{% endif %} text-black">Received</a>
+        <a href="?filter=pending" class="btn {% if filter_type == 'pending' %}btn-warning{% else %}btn-outline-warning{% endif %} text-black">Pending</a>
+    </div>
+
+    <div class="row text-center mb-4">
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Received</h5>
+                    <h4>₹{{ received_total|floatformat:2 }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5>Pending</h5>
+                    <h4>₹{{ pending_total|floatformat:2 }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>Total</h5>
+                    <h4>₹{{ total_earnings|floatformat:2 }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if earnings %}
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment Date</th>
+                    <th>Student</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for earning in earnings %}
+                    <tr>
+                        <td>{{ earning.course.title }}</td>
+                        <td>₹{{ earning.amount }}</td>
+                        <td>
+                            {% if earning.is_paid %}
+                                <span class="badge bg-success text-dark">Received</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ earning.payment.payment_date|date:"Y-m-d" }}</td>
+                        <td>{{ earning.payment.student.user.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No earnings found.</p>
+    {% endif %}
+
+</div>
+  </div>
+</div>
+{% endblock %}

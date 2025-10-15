@@ -1,0 +1,138 @@
+{% extends 'base2.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid "><!-- bg-white-->
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'admin/admin_sidebar.html' %}
+
+
+
+    <!-- Main Content -->
+    <div class="col-md-10 p-4">
+      <h2 class="mb-4">Dashboard</h2>
+
+      <!-- Stats Cards -->
+        <div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3" style="width: 50px; height: 50px; border-radius: 50%; background-color: #0d6efd; display: flex; align-items: center; justify-content: center; color: white;">
+          <i class="fas fa-book"></i>
+        </div>
+        <div>
+          <h5 class="mb-0">{{ course_count }}</h5>
+          <small>Courses</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3" style="width: 50px; height: 50px; border-radius: 50%; background-color: #198754; display: flex; align-items: center; justify-content: center; color: white;">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <div>
+          <h5 class="mb-0">{{ student_count }}</h5>
+          <small>Students</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3" style="width: 50px; height: 50px; border-radius: 50%; background-color: #fd7e14; display: flex; align-items: center; justify-content: center; color: white;">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div>
+          <h5 class="mb-0">{{ teacher_count }}</h5>
+          <small>Teachers</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-0">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3" style="width: 50px; height: 50px; border-radius: 50%; background-color: #dc3545; display: flex; align-items: center; justify-content: center; color: white;">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+        <div>
+          <h5 class="mb-0">₹{{ total_earnings|floatformat:2 }}</h5>
+          <small>Earnings</small>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+          <div class="card-body d-flex align-items-center">
+            <div class="me-3" style="width: 50px; height: 50px; border-radius: 50%; background-color: gold; display: flex; align-items: center; justify-content: center; color: white;">
+              <i class="fa-regular fa-note-sticky"></i>
+            </div>
+            <div>
+              <h5 class="mb-0">{{ application_count }}</h5>
+              <small>Pending Applications </small>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+      <!-- Recent Courses Table -->
+      <div class="card mt-5 shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+          <i class="fas fa-book me-2"></i> Recent Courses
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Course Title</th>
+                  <th>Category</th>
+                  <th>Teacher</th>
+                  <th>Price</th>
+                  <th>Enrollments</th>
+                </tr>
+              </thead>
+                <tbody>
+                  {% for course in recent_courses %}
+                    <tr>
+                      <td>{{ course.title }}</td>
+                      <td>{{ course.course_category.name }}</td>
+                      <td>{{ course.teacher.user.get_full_name }}</td>
+
+                        {% if course.price == 0 %}
+                        <td>₹{{ course.price }}(Free)</td>
+                        {% else %}
+                        <td>₹{{ course.price }}</td>
+                        {% endif %}
+
+                      <td>{{ course.enrollments.count }}</td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="5" class="text-center text-muted">No recent courses available.</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

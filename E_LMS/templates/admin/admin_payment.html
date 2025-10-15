@@ -1,0 +1,76 @@
+{% extends 'base2.html' %}
+{% load static %}
+{% block title %}Teacher Earnings Details{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+      {% include 'admin/admin_sidebar.html' %}
+     <div class="col-md-10 ms-auto p-4 bg-light" style="min-height: 100vh;">
+
+
+  <!-- Filter Buttons -->
+  <div class="btn-group mb-3 " role="group" aria-label="Filter earnings">
+    <a href="?status=all" class="btn btn-outline-primary me-3 {% if filter_status == 'all' %}active{% endif %}">All</a>
+    <a href="?status=paid" class="btn btn-outline-success text-dark me-3 {% if filter_status == 'paid' %}active{% endif %}">Paid</a>
+    <a href="?status=unpaid" class="btn btn-outline-danger text-dark {% if filter_status == 'unpaid' %}active{% endif %}">Unpaid</a>
+  </div>
+
+  <!-- Earnings Table -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <i class="fas fa-chalkboard-teacher me-2"></i> Teacher Earnings (By Course)
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th>Course Title</th>
+              <th>Teacher Name</th>
+              <th>Earning (₹)</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in teacher_earnings %}
+            <tr>
+              <td>{{ item.course__title }}</td>
+              <td>{{ item.teacher__user__first_name }} {{ item.teacher__user__last_name }}</td>
+              <td>{{ item.total_earned|floatformat:2 }}</td>
+              <td>
+                {% if item.is_paid %}
+                  <span class="badge bg-success text-dark">Paid</span>
+                {% else %}
+                  <span class="badge bg-danger text-dark">Unpaid</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if not item.is_paid %}
+                  <a href="{% url 'pay_teacher_earning' item.course__id %}" class="btn btn-success btn-sm">
+                    <i class="fas fa-money-bill-wave me-1"></i> Pay
+                  </a>
+                {% else %}
+                  <button class="btn btn-secondary btn-sm" disabled>
+                    <i class="fas fa-check-circle me-1"></i> Paid
+                  </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="text-center text-muted">No teacher earnings found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+{% endblock %}

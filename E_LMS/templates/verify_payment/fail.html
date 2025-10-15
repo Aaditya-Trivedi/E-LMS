@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment Failed{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 style="color: red">Payment Failed!</h1>
+    <p>Something went wrong while processing your payment. Please try again.</p>
+
+    {% if course %}
+        <a href="{% url 'checkout' course.slug %}" class="btn btn-primary mt-3">Try Again</a>
+    {% else %}
+        <a href="{% url 'all_courses' %}" class="btn btn-primary mt-3">Go to Courses</a>
+    {% endif %}
+</div>
+<br>
+{% endblock %}
