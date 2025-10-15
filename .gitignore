@@ -1,0 +1,17 @@
+# Ignore Python virtual environment
+.venv/
+
+# Ignore IDE settings
+.idea/
+
+# Ignore zip and large media files
+*.zip
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Ignore temporary or system files
+*.log
+*.tmp
+Thumbs.db
