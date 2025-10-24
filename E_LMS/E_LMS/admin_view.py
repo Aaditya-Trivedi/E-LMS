@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from app.EmailBackEnd import EmailBackEnd
@@ -7,9 +8,12 @@ from django.db.models import Sum
 from E_LMS.views import page_not_found
 from django.core.mail import send_mail
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 import re
+
+from xhtml2pdf import pisa
 
 NAME_REGEX = re.compile(r'^[A-Za-z0-9\s]+$')          # letters, numbers, spaces
 EMAIL_REGEX = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
@@ -334,3 +338,13 @@ def update_application_status(request, app_id, status):
             messages.success(request, "Application rejected.")
 
     return redirect('admin_joining_applications')
+
+def download_pdf(request):
+    # this is just an example HTML that will become a PDF
+    html = render_to_string('admin/simple_pdf.html', {'message': 'Hello from E-LMS PDF!'})
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+    pisa.CreatePDF(html, dest=response)
+    return response

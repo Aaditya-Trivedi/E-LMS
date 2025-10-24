@@ -56,7 +56,7 @@ urlpatterns = [
     path('ad-min/earnings/', admin_view.admin_earnings, name='admin_earnings'),
     path('ad-min/payment/', admin_view.admin_earnings_view, name='admin_payments'),
     path('ad-min/earnings/pay/<int:course_id>/', admin_view.pay_teacher_earning, name='pay_teacher_earning'),
-
+    path('ad-min/download-pdf/', admin_view.download_pdf, name='download_pdf'),
     path('apply/teacher/', views.apply_as_teacher, name='apply_as_teacher'),
     path('ad-min/joining-applications/', admin_view.admin_joining_applications, name='admin_joining_applications'),
     path('ad-min/application/<int:app_id>/<str:status>/', admin_view.update_application_status,name='update_application_status'),
