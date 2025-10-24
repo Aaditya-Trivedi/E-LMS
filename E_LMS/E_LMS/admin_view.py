@@ -351,10 +351,7 @@ def download_earning_report(request):
 
     # ----- Admin earnings -----
     admin_earnings = AdminEarning.objects.select_related("course", "payment")
-    if filter_status == "paid":
-        admin_earnings = admin_earnings.filter(payment__status="successful")
-    elif filter_status == "unpaid":
-        admin_earnings = admin_earnings.filter(payment__status="failed")
+
 
     total_admin = admin_earnings.aggregate(total=Sum("commission_amount"))["total"] or 0
 

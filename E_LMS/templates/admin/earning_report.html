@@ -45,63 +45,63 @@
     </table>
 
     <div class="section-title">Payments</div>
-<!-- Paid Earnings -->
-<h3>Paid</h3>
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Teacher</th>
-      <th>Course</th>
-      <th>Amount</th>
-      <th>Is Paid?</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for t in teacher_earnings %}
-      {% if t.is_paid %}
+    <!-- Paid Earnings -->
+    <h3>Paid</h3>
+    <table>
+      <thead>
         <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
-          <td>{{ t.course.title }}</td>
-          <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
-          <td>Yes</td>
+          <th>#</th>
+          <th>Teacher</th>
+          <th>Course</th>
+          <th>Amount</th>
+          <th>Is Paid?</th>
         </tr>
-      {% endif %}
-    {% empty %}
-      <tr><td colspan="5">No paid earnings found.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+        {% for t in teacher_earnings %}
+          {% if t.is_paid %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
+              <td>{{ t.course.title }}</td>
+              <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
+              <td>Yes</td>
+            </tr>
+          {% endif %}
+        {% empty %}
+          <tr><td colspan="5">No paid earnings found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-<!-- Unpaid Earnings -->
-<h3>Unpaid</h3>
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Teacher</th>
-      <th>Course</th>
-      <th>Amount</th>
-      <th>Is Paid?</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for t in teacher_earnings %}
-      {% if not t.is_paid %}
+    <!-- Unpaid Earnings -->
+    <h3>Unpaid</h3>
+    <table>
+      <thead>
         <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
-          <td>{{ t.course.title }}</td>
-          <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
-          <td>No</td>
+          <th>#</th>
+          <th>Teacher</th>
+          <th>Course</th>
+          <th>Amount</th>
+          <th>Is Paid?</th>
         </tr>
-      {% endif %}
-    {% empty %}
-      <tr><td colspan="5">No unpaid earnings found.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+        {% for t in teacher_earnings %}
+          {% if not t.is_paid %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
+              <td>{{ t.course.title }}</td>
+              <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
+              <td>No</td>
+            </tr>
+          {% endif %}
+        {% empty %}
+          <tr><td colspan="5">No unpaid earnings found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
     <div class="totals">
         <p><strong>Total Admin Earnings:</strong> {{ total_admin|floatformat:2 }}</p>
         <p><strong>Total Teacher Earnings:</strong> {{ total_teacher|floatformat:2 }}</p>
