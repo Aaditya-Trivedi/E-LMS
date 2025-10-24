@@ -7,7 +7,7 @@
       body { font-family: Arial, sans-serif; font-size: 12px; margin: 20px; }
       h1 { text-align: center; font-size: 18px; }
       table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-      th, td { border: 1px solid #aaa; padding: 6px; text-align: left; }
+      th, td { border: 1px solid #aaa; padding: 3px; text-align: left; }
       th { background-color: #eee; }
       .section-title { margin-top: 20px; font-weight: bold; font-size: 15px; }
       .totals { margin-top: 20px; font-size: 13px; }
@@ -34,7 +34,7 @@
           <tr>
             <td>{{ forloop.counter }}</td>
             <td>{{ e.course.title }}</td>
-            <td>{{ e.commission_amount }}</td>
+            <td style="text-align: right; padding-right: 0px;">{{ e.commission_amount }}</td>
             <td>{{ e.payment.status }}</td>
             <td>{{ e.payment.payment_date|date:"Y-m-d" }}</td>
           </tr>
@@ -64,7 +64,7 @@
           <td>{{ forloop.counter }}</td>
           <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
           <td>{{ t.course.title }}</td>
-          <td>{{ t.amount|floatformat:2 }}</td>
+          <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
           <td>Yes</td>
         </tr>
       {% endif %}
@@ -93,7 +93,7 @@
           <td>{{ forloop.counter }}</td>
           <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
           <td>{{ t.course.title }}</td>
-          <td>{{ t.amount|floatformat:2 }}</td>
+          <td style="text-align: right; padding-right: 0px;">{{ t.amount|floatformat:2 }}</td>
           <td>No</td>
         </tr>
       {% endif %}
