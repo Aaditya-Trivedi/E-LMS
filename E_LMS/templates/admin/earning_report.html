@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Earning & Payment Reports</title>
+    <style>
+      body { font-family: Arial, sans-serif; font-size: 12px; margin: 20px; }
+      h1 { text-align: center; font-size: 18px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+      th, td { border: 1px solid #aaa; padding: 6px; text-align: left; }
+      th { background-color: #eee; }
+      .section-title { margin-top: 20px; font-weight: bold; font-size: 15px; }
+      .totals { margin-top: 20px; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <h1>Earning & Payments Report</h1>
+    <p>Generated on: {{ generated_on|date:"Y-m-d H:i" }}</p>
+    <p>Status Filter: {{ filter_status|capfirst }}</p>
+
+    <div class="section-title">Admin Earnings</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Course</th>
+          <th>Commission Amount</th>
+          <th>Payment Status</th>
+          <th>Payment Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in admin_earnings %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ e.course.title }}</td>
+            <td>{{ e.commission_amount }}</td>
+            <td>{{ e.payment.status }}</td>
+            <td>{{ e.payment.payment_date|date:"Y-m-d" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5">No admin earnings found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="section-title">Payments</div>
+<!-- Paid Earnings -->
+<h3>Paid</h3>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Teacher</th>
+      <th>Course</th>
+      <th>Amount</th>
+      <th>Is Paid?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in teacher_earnings %}
+      {% if t.is_paid %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
+          <td>{{ t.course.title }}</td>
+          <td>{{ t.amount|floatformat:2 }}</td>
+          <td>Yes</td>
+        </tr>
+      {% endif %}
+    {% empty %}
+      <tr><td colspan="5">No paid earnings found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Unpaid Earnings -->
+<h3>Unpaid</h3>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Teacher</th>
+      <th>Course</th>
+      <th>Amount</th>
+      <th>Is Paid?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in teacher_earnings %}
+      {% if not t.is_paid %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ t.teacher.user.first_name }} {{ t.teacher.user.last_name }}</td>
+          <td>{{ t.course.title }}</td>
+          <td>{{ t.amount|floatformat:2 }}</td>
+          <td>No</td>
+        </tr>
+      {% endif %}
+    {% empty %}
+      <tr><td colspan="5">No unpaid earnings found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+    <div class="totals">
+        <p><strong>Total Admin Earnings:</strong> {{ total_admin|floatformat:2 }}</p>
+        <p><strong>Total Teacher Earnings:</strong> {{ total_teacher|floatformat:2 }}</p>
+        <p><strong>Overall Total:</strong> {{ overall_total|floatformat:2 }}</p>
+    </div>
+  </body>
+</html>

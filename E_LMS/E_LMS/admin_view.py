@@ -11,6 +11,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
+from django.utils import timezone
+
 import re
 
 from xhtml2pdf import pisa
@@ -339,12 +341,49 @@ def update_application_status(request, app_id, status):
 
     return redirect('admin_joining_applications')
 
-def download_pdf(request):
-    # this is just an example HTML that will become a PDF
-    html = render_to_string('admin/simple_pdf.html', {'message': 'Hello from E-LMS PDF!'})
+def download_earning_report(request):
+    # only admin can access
+    user = request.user
+    if not user.is_authenticated or getattr(user, "role", None) != "admin":
+        return HttpResponse("Unauthorized", status=403)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+    filter_status = request.GET.get("status", "all")
 
+    # ----- Admin earnings -----
+    admin_earnings = AdminEarning.objects.select_related("course", "payment")
+    if filter_status == "paid":
+        admin_earnings = admin_earnings.filter(payment__status="successful")
+    elif filter_status == "unpaid":
+        admin_earnings = admin_earnings.filter(payment__status="failed")
+
+    total_admin = admin_earnings.aggregate(total=Sum("commission_amount"))["total"] or 0
+
+    # ----- Teacher earnings -----
+    teacher_earnings = TeacherEarning.objects.select_related("course", "teacher__user")
+    if filter_status == "paid":
+        teacher_earnings = teacher_earnings.filter(is_paid=True)
+    elif filter_status == "unpaid":
+        teacher_earnings = teacher_earnings.filter(is_paid=False)
+
+    total_teacher = teacher_earnings.aggregate(total=Sum("amount"))["total"] or 0
+    overall_total = total_admin + total_teacher
+
+    # render HTML
+    html = render_to_string(
+        "admin/earning_report.html",
+        {
+            "admin_earnings": admin_earnings,
+            "teacher_earnings": teacher_earnings,
+            "total_admin": total_admin,
+            "total_teacher": total_teacher,
+            "overall_total": overall_total,
+            "filter_status": filter_status,
+            "generated_on": timezone.now(),
+        },
+    )
+
+    # create PDF
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="Earning Reports.pdf"'
     pisa.CreatePDF(html, dest=response)
     return response
