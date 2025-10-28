@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
+from django.db.models import Q
 
 import re
 
@@ -119,6 +120,84 @@ def edit_profile(request):
         'admin_profile': admin_profile,
     }
     return render(request, 'admin/admin_profile.html', context)
+
+@login_required
+def manage_languages_categories(request):
+    user = request.user
+
+    # Only admins allowed
+    if user.role != "admin":
+        return page_not_found(request)
+
+    # Fetch all
+    categories = Categories.objects.all().order_by("id")
+    languages = Language.objects.all().order_by("id")
+
+    if request.method == "POST":
+        form_type = request.POST.get("form_type")
+        print("form_type", form_type)
+        # --- Add Category ---
+        if form_type == "category":
+            name = request.POST.get("name", "").strip()
+            icon = request.POST.get("icon", "").strip()
+
+            if not name:
+                messages.error(request, "Category name is required.")
+            elif not icon:
+                messages.error(request, "icon is required.")
+            elif Categories.objects.filter(name__iexact=name).exists():
+                messages.warning(request, "This category already exists.")
+            else:
+                Categories.objects.create(name=name, icon=icon)
+                messages.success(request, f"Category '{name}' added successfully!")
+            return redirect("manage_languages_categories")
+
+        # --- Add Language ---
+        elif form_type == "language":
+            name = request.POST.get("name", "").strip()
+
+            if not name:
+                messages.error(request, "Language name is required.")
+            elif Language.objects.filter(name__iexact=name).exists():
+                messages.warning(request, "This language already exists.")
+            else:
+                Language.objects.create(name=name)
+                messages.success(request, f"Language '{name}' added successfully!")
+            return redirect("manage_languages_categories")
+
+    context = {
+        "categories": categories,
+        "languages": languages,
+    }
+    return render(request, "admin/manage_language_category.html", context)
+
+@login_required
+def delete_category(request, cat_id):
+    user = request.user
+    if user.role != "admin":
+        return page_not_found(request)
+
+    try:
+        category = Categories.objects.get(id=cat_id)
+        category.delete()
+        messages.success(request, f"Category '{category.name}' deleted successfully.")
+    except Categories.DoesNotExist:
+        messages.error(request, "Category not found.")
+    return redirect("manage_languages_categories")
+
+@login_required
+def delete_language(request, lang_id):
+    user = request.user
+    if user.role != "admin":
+        return page_not_found(request)
+
+    try:
+        language = Language.objects.get(id=lang_id)
+        language.delete()
+        messages.success(request, f"Language '{language.name}' deleted successfully.")
+    except Language.DoesNotExist:
+        messages.error(request, "Language not found.")
+    return redirect("manage_languages_categories")
 
 @login_required
 def admin_courses(request):
@@ -341,6 +420,7 @@ def update_application_status(request, app_id, status):
 
     return redirect('admin_joining_applications')
 
+@login_required
 def download_earning_report(request):
     # only admin can access
     user = request.user

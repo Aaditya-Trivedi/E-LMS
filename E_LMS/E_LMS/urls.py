@@ -57,6 +57,9 @@ urlpatterns = [
     path('ad-min/payment/', admin_view.admin_earnings_view, name='admin_payments'),
     path('ad-min/earnings/pay/<int:course_id>/', admin_view.pay_teacher_earning, name='pay_teacher_earning'),
     path('ad-min/earning-report/pdf/', admin_view.download_earning_report, name='download_earning_report'),
+    path('ad-min/manage-languages-categories/', admin_view.manage_languages_categories, name='manage_languages_categories'),
+    path('ad-min/delete-category/<int:cat_id>/', admin_view.delete_category, name='delete_category'),
+    path('ad-min/delete-language/<int:lang_id>/', admin_view.delete_language, name='delete_language'),
 
 
     path('apply/teacher/', views.apply_as_teacher, name='apply_as_teacher'),
