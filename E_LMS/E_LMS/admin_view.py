@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
-from django.db.models import Q
+
 
 import re
 
