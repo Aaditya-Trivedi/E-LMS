@@ -29,7 +29,7 @@ class AdminProfileAdmin(admin.ModelAdmin):
 class VideoInline(admin.TabularInline):
     model = Video
     extra = 1   # how many empty rows for new entries
-    fields = ('serial_number','lesson', 'thumbnail' , 'title', 'video_file', 'time_duration', 'preview')
+    fields = ('serial_number','lesson', 'thumbnail' , 'title', 'video_file', 'time_duration')
 
 # ----------------- COURSE -----------------
 @admin.register(Course)

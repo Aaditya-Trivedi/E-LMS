@@ -131,6 +131,7 @@
                   <th>Category</th>
                   <th>Teacher</th>
                   <th>Price</th>
+                    <th>Discount(%)</th>
                   <th>Enrollments</th>
                 </tr>
               </thead>
@@ -146,6 +147,7 @@
                         {% else %}
                         <td>₹{{ course.price }}</td>
                         {% endif %}
+                        <td>{{ course.discount }}</td>
 
                       <td>{{ course.enrollments.count }}</td>
                     </tr>

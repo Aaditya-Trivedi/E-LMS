@@ -84,7 +84,6 @@ class Course(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, default=0)
 
-
     def __str__(self):
         return self.title
 

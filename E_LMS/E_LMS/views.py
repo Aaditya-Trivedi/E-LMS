@@ -38,7 +38,7 @@ def base(request):
 
 def home(request):
     context = get_common_context()
-    context['category'] = Categories.objects.all().order_by('id')[0:5]  # limit 5
+    context['category'] = Categories.objects.all().order_by('id')[0:6]  # limit 5
     context['courses'] = Course.objects.all().order_by('id')[0:5]      # limit 5
 
     return render(request, "main/index.html", context)
@@ -110,6 +110,7 @@ def checkout(request, slug):
     action = request.GET.get('action')
     context = {'course': course, 'order': None}
 
+
     # Student check
     try:
         student = request.user.student_profile
@@ -117,6 +118,7 @@ def checkout(request, slug):
         messages.error(request, 'You must be logged in as a student to enroll.')
         return redirect('doLogin')
 
+    context['student'] = student
     # Already enrolled check
     if Enrollment.objects.filter(student=student, course=course).exists():
         messages.warning(request, "You are already enrolled in this course.")
@@ -201,6 +203,8 @@ def checkout(request, slug):
 
         context['order'] = order
         context['KEY_ID'] = settings.KEY_ID
+
+
 
     return render(request, 'checkout/checkout.html', context)
 
